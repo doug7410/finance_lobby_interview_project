@@ -1,0 +1,47 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: property_db
+    environment:
+      POSTGRES_DB: property_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - property_network
+
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: property_backend
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: property_management
+      DB_USERNAME: postgres
+      DB_PASSWORD: secret
+      APP_KEY: base64:zR3kJqV3y4aB7mD2pL8xN5wF6hG9jT1cU2vE8nM0qS4=
+    volumes:
+      - ./backend:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - property_network
+    command: tail -f /dev/null
+
+
+volumes:
+  postgres_data:
+
+networks:
+  property_network:
+    driver: bridge

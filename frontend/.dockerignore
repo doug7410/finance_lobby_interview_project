@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.git
+.gitignore
+.env
+.env.local
+.DS_Store
+*.log
+.idea
+.vscode
+coverage/
+.nyc_output/
