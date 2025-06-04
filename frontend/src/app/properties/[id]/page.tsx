@@ -25,7 +25,7 @@ export default function PropertyDetail() {
 
   const fetchProperty = async () => {
     const response = await propertyService.getById(id);
-    setProperty(response.data);
+    setProperty(response.data.data);
   };
 
   const handleGetROI = () => {
